@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F6871F</color>
+    <color name="colorPrimaryDark">#F15D2A</color>
+    <color name="colorAccent">#00Abbe</color>
+    <color name="transparent">#00000000</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="orangeText">#f9a01b</color>
+    <color name="orangeTextDark">#f58221</color>
+    <color name="rentBtnNormal">#ff7000</color>
+    <color name="rentBtnPressed">#ffe100</color>
+    <color name="deliveryBtnNormal">#000000</color>
+    <color name="deliveryBtnPressed">#ffe100</color>
+    <color name="popupBtnNormal">#27292c</color>
+    <color name="popupBtnPressed">#aa782e</color>
+    <!--<color name="rentBtnNormal">#f9a01b</color>
+    <color name="rentBtnPressed">#735932</color>
+    <color name="deliveryBtnNormal">#27292c</color>
+    <color name="deliveryBtnPressed">#aa782e</color>-->
+    <color name="deleveryStepGray">#c6c6c6</color>
+    <color name="noticePressed">#f58220</color>
+    <color name="editTextGray">#767676</color>
+    <color name="grayText">#666666</color>
+    <color name="transparent_black">#66000000</color>
+    <color name="powerOn">#f37121</color>
+    <color name="powerOff">#2a2a2a</color>
+    <color name="popupCancelText">#9f9f9f</color>
+    <color name="popupConfirmTextPressed">#9f9f9f</color>
+    <color name="titleMenuText">#ef8d22</color>
+    <color name="titleMenuTextPressed">#e39b30</color>
+    <color name="subpageBackground">#f4f4f4</color>
+    <color name="titleBorder">#d6d6d6</color>
+    <color name="returnPictureText">#323539</color>
+    <color name="ticketPriceText">#f89f1b</color>
+    <color name="ticketTitleSubtext">#5a5a5a</color>
+    <color name="ticketTitleBackground">#f5f5f5</color>
+    <color name="ticketDetailPriceText">#191b1d</color>
+    <color name="ticketDetailExtraOptionDisable">#9a9a9a</color>
+    <color name="rentHistoryTitle">#acacac</color>
+    <color name="deliveryHistoryCancel">#d4d4d5</color>
+    <color name="itemSelected">#e6e6e6</color>
+    <color name="deliveryBgAddress">#f68032</color>
+    <color name="deliveryLocationPressed">#F46D33</color>
+    <color name="deliveryLocationBox">#323539</color>
+    <color name="deliveryLocationTextPressed">#f9ba94</color>
+    <color name="customer_time_text">#252729</color>
+
+    <color name="evroadDescriptionGray">#4a4a4a</color>
+    <color name="evroadInfoOrange">#f47921</color>
+    <color name="splashImageBackup">#F2F2F2</color>
+
+    <color name="red">#FF0000</color>
+
+</resources>
