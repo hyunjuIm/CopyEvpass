@@ -4,7 +4,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/img_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/textPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="휴대전화번호를 입력해 주세요."
+        android:textSize="11dp"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogo"/>
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@drawable/box_textarea"
+        android:hint="010XXXXXXXX"
+        android:textColor="@color/editTextGray"
+        android:textColorHint="@color/grayText"
+        android:padding="5dp"
+        android:maxLength="11"
+        android:singleLine="true"
+        android:inputType="number"
+        android:textSize="11sp"
+        app:layout_constraintWidth_percent="0.75"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneNumber"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:id="@+id/btnSendAuthNum"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="인증번호받기"
+        android:textSize="10.5sp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/grayText"
+        android:background="@drawable/btn_login"
+        android:layout_marginTop="5dp"
+        app:layout_constraintWidth_percent="0.23"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneNumber" />
+
+    <EditText
+        android:id="@+id/etAuthNumber"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/box_textarea_longs"
+        android:gravity="center"
+        android:hint="인증번호 입력"
+        android:inputType="number"
+        android:maxLength="4"
+        android:singleLine="true"
+        android:textColor="@color/editTextGray"
+        android:textColorHint="@color/grayText"
+        android:textSize="11sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSendAuthNum" />
+
+    <Button
+        android:id="@+id/btnLoginConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_login_longs"
+        android:text="확인"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etAuthNumber"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

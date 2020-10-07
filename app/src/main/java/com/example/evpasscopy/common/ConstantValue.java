@@ -4,6 +4,8 @@ import com.naver.maps.geometry.LatLng;
 import com.naver.maps.geometry.LatLngBounds;
 
 public class ConstantValue {
+    public static String app_token                      = null;
+
     public static final float home_latitude             = 33.397474f;
     public static final float home_longitude            = 126.550150f;
     public static final float map_default_zoom_level    = 8.2f;
