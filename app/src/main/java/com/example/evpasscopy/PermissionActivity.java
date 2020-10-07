@@ -60,6 +60,7 @@ public class PermissionActivity extends AppCompatActivity implements AutoPermiss
                 }
             }
         });
+
     }
 
     @Override

@@ -6,12 +6,15 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,6 +35,7 @@ import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.Pickable;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
@@ -43,6 +47,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.evpasscopy.common.ConstantValue.app_token;
@@ -50,8 +55,7 @@ import static com.example.evpasscopy.common.ConstantValue.defaultMapBound;
 import static com.example.evpasscopy.common.ConstantValue.home_latitude;
 import static com.example.evpasscopy.common.ConstantValue.home_longitude;
 import static com.example.evpasscopy.common.ConstantValue.map_default_zoom_level;
-import static com.example.evpasscopy.common.RestUrl.URL_API_POLICY;
-import static com.example.evpasscopy.common.RestUrl.URL_API_STATION_LIST;
+import static com.example.evpasscopy.common.RestUrl.*;
 import static com.example.evpasscopy.volley.VolleyManager.requestQueue;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //지도
     private NaverMap mNaverMap;
     private MapFragment mMapFragment;
+    private InfoWindow mCurrentWindow; //지도 위에 올리는 정보창
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // 카메라 초기 위치 설정
         LatLng initialPosition = new LatLng(home_latitude, home_longitude);
 
+        naverMap.setOnMapClickListener(mMapClickListener);
         naverMap.getUiSettings().setZoomControlEnabled(false); //줌 컨트롤 활성화 여부
         naverMap.getUiSettings().setCompassEnabled(false);// 나침반 활성화 여부
         naverMap.getUiSettings().setScaleBarEnabled(false); // 축척바 활성화 여부
@@ -175,14 +181,89 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public Marker addMarker(Station markerItem) {
         double x = markerItem.getX();
         double y = markerItem.getY();
-        final LatLng position = new LatLng(y, x);
+        final LatLng position = new LatLng(x, y);
 
-        Marker marker = new Marker();
+        final Marker marker = new Marker();
         marker.setPosition(position);
+        marker.setWidth(150);
+        marker.setHeight(150);
+
+        if(markerItem.getType().equals("STAT_0005")){
+            View rootMarker = LayoutInflater.from(this).inflate(R.layout.evzone_marker, null);
+            FrameLayout iv = (FrameLayout) rootMarker.findViewById(R.id.iv_marker);
+            TextView textMarker = (TextView) rootMarker.findViewById(R.id.tv_marker);
+
+            textMarker.setText(String.valueOf(markerItem.getPakingCount()));
+            iv.setBackgroundResource(R.drawable.marker_zone_outs);
+            marker.setIcon(OverlayImage.fromView(rootMarker));
+        } else {
+            View rootMarker = LayoutInflater.from(this).inflate(R.layout.stay_marker, null);
+            Button iv = (Button) rootMarker.findViewById(R.id.iv_marker);
+
+            iv.setBackgroundResource(R.drawable.marker_stays);
+            marker.setIcon(OverlayImage.fromView(rootMarker));
+        }
+
         marker.setMap(mNaverMap);
-        marker.setIcon(OverlayImage.fromResource(R.drawable.marker_stays));
+
+        // 정보창 텍스트
+        final String infoText = markerItem.getName() + "\r\n 대여가능 자전거 : " + " " + markerItem.getPakingCount();
+
+        final InfoWindow infoWindow = new InfoWindow();
+        infoWindow.setAdapter(new InfoWindow.ViewAdapter() {
+            @NonNull
+            @Override
+            public View getView(@NonNull InfoWindow infoWindow) {
+                return getInfoWindow(infoText);
+            }
+        });
+
+        marker.setOnClickListener(new Overlay.OnClickListener() {
+            @Override
+            public boolean onClick(@NonNull Overlay overlay) {
+                if (mCurrentWindow != null) {
+                    mCurrentWindow.close();
+                }
+                mCurrentWindow = infoWindow;
+                infoWindow.open((Marker)overlay);
+                mNaverMap.moveCamera(CameraUpdate.scrollTo(position).animate(CameraAnimation.Easing, 200));
+                return false;
+            }
+        });
 
         markerItem.setMarker(marker);
         return null;
     }
+
+    //마커 정보창 setText
+    private View getInfoWindow(String text) {
+        View calloutParent = LayoutInflater.from(this).inflate(R.layout.callout_overlay_view, null);
+        TextView calloutText = calloutParent.findViewById(R.id.callout_text);
+        calloutText.setText(text);
+
+        return calloutParent;
+    }
+
+    private final NaverMap.OnMapClickListener mMapClickListener = new NaverMap.OnMapClickListener() {
+        @Override
+        public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+            int radius = 1;
+            //특정 화면 좌표 주변 radius 픽셀 내에 나타난 모든 오버레이 및 심벌을 가져옴
+            List<Pickable> pickableList = mNaverMap.pickAll(pointF, radius);
+            ArrayList<Marker> markers = new ArrayList<>();
+
+            //선택된 마커 정보
+            for (Pickable pickable : pickableList) {
+                if (pickable instanceof Marker) {
+                    markers.add(((Marker) pickable));
+                }
+            }
+
+            if (markers.size() <= 0) {
+                if (mCurrentWindow != null) {
+                    mCurrentWindow.close();
+                }
+            }
+        }
+    };
 }

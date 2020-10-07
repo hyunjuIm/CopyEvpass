@@ -52,9 +52,15 @@ public class SplashActivity extends AppCompatActivity {
                             String token = response.getString("app_token");
                             app_token = token.substring(8, token.length()-8);
 
-                            Log.e(TAG, app_token);
+                            String secretKey = response.getString("secret_key");
+                            secret_key = secretKey.substring(8, secretKey.length()-8);
+                            Log.e(TAG, secret_key);
 
-                            Intent intent = new Intent(getBaseContext(), PermissionActivity.class);
+                            String secretIv = response.getString("secret_iv");
+                            secret_iv = secretIv.substring(8, secretIv.length()-8);
+                            Log.e(TAG, secret_iv);
+
+                            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
 

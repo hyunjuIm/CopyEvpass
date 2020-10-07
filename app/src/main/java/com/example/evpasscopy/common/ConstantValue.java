@@ -5,6 +5,8 @@ import com.naver.maps.geometry.LatLngBounds;
 
 public class ConstantValue {
     public static String app_token                      = null;
+    public static String secret_key                     = null;
+    public static String secret_iv                      = null;
 
     public static final float home_latitude             = 33.397474f;
     public static final float home_longitude            = 126.550150f;
